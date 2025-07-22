@@ -1,0 +1,66 @@
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino #using arduino the serial speed is much faster
+
+
+uart:
+  tx_pin: 
+    number: GPIO8
+    inverted: true
+  rx_pin: 
+    number: GPIO06
+    inverted: true
+  baud_rate: 1200
+  data_bits: 8
+  parity: NONE
+  stop_bits: 2
+
+micronova_v2:
+  enable_rx_pin: GPIO20 #if there is a pin that control the bus direction
+  uart_echo: true #if RX pin also recive written data (ex open-drain bus)
+
+
+number:
+  - platform: micronova_v2
+    custom:
+      - name: First RW Value
+        # COMMON VALUES FOR ALL COMPONENTS
+        memory_address: 0x6b
+        memory_eeprom: false  # default=false
+        memory_mask: 0xFF     # default=0xFF
+        memory_size: 1        #1 for bytes, 2 for word. Default=1
+        priority: 1           #If a value should be read faster than others, increase this value
+        slope: 1              #read data is = slope * raw_value + intercept
+        offset: 0
+        #VALUES VALID ONLY FOR NUMBER
+        max_value: 0        #for number component
+        min_value: 255
+        step: 0.1
+      - name: Second RW Value
+        memory_address: 0x6c
+
+
+sensor:
+  - platform: micronova_v2
+    custom:
+      - name: First sensor
+        memory_address: 0x81
+        memory_eeprom: false
+        slope: 0.01953125
+        accuracy_decimals: 3
+      - name: Second sensor
+        memory_address: 0x82
+
+switch:
+  - platform: micronova_v2
+    custom:
+      - name: ram0b_bit1
+        memory_address: 0x0b
+        memory_mask: 0x01
+        retain: true #if true, switch is written again if the value is changed by board logic
+      - name: ram0b_bit2
+        memory_address: 0x0b
+        memory_mask: 0x02
+        retain: true

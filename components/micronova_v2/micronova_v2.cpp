@@ -159,7 +159,7 @@ void MicroNova_v2::loop() {
           }
         }
       } else {
-        if (millis()-stateTime > 100) {
+        if (millis()-stateTime > 200) {
           ESP_LOGE(TAG, "Timeout for parameter %c0x%X with state %u", list[currentIndex]->ee?'E':'R', list[currentIndex]->addr, currentState);
           goState(currentState_idle);
         }
