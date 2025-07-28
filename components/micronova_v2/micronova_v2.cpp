@@ -34,6 +34,7 @@ void MicroNova_v2::loop() {
   static uint8_t rbuf[4];
   switch (currentState){
     case currentState_idle:
+      if (millis()-stateTime < delay_) return;
       if (writeList.size() > 0) { // something to write
         writeReq_t req = writeList.front();
         currentIndex = req.par->location;

@@ -90,6 +90,7 @@ class MicroNova_v2 : public Component, public uart::UARTDevice {
 
   void set_enable_rx_pin(GPIOPin *enable_rx_pin) { this->enable_rx_pin_ = enable_rx_pin; }
   void set_uart_echo(bool x) { this->uart_echo_ = x;}
+  void set_delay(uint32_t del) {this->delay_ = del;}
 
   static void write_BoardLocation(MicroNovaParameter * par, uint16_t val) {
     ESP_LOGV(TAG, "TO WRITE VAL:%u", val);
@@ -105,6 +106,7 @@ class MicroNova_v2 : public Component, public uart::UARTDevice {
  protected:
   GPIOPin *enable_rx_pin_{nullptr};
   bool uart_echo_{false};
+  uint32_t delay_ = 0, lastRead_ = 0;
 
   typedef enum {
     currentState_idle,

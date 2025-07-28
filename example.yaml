@@ -20,6 +20,7 @@ uart:
 micronova_v2:
   enable_rx_pin: GPIO20 #if there is a pin that control the bus direction
   uart_echo: true #if RX pin also recive written data (ex open-drain bus)
+  delay_read_write: 0ms #some boards need a time between requests, increase this value if you have multiple timeouts in the logs
 
 
 number:

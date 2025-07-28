@@ -20,6 +20,7 @@ CONF_SLOPE = "slope"
 CONF_OFFSET = "offset"
 CONF_CUSTOM = "custom"
 CONF_RETAIN = "retain"
+CONF_DELAY_READ_WRITE = "delay_read_write"
 
 micronova_ns = cg.esphome_ns.namespace("micronova_v2")
 
@@ -31,6 +32,7 @@ CONFIG_SCHEMA = (
             cv.GenerateID(): cv.declare_id(MicroNova),
             cv.Optional(CONF_ENABLE_RX_PIN): pins.gpio_output_pin_schema,
             cv.Optional(CONF_UART_ECHO, default=False): cv.boolean,
+            cv.Optional(CONF_DELAY_READ_WRITE, default=0): cv.positive_time_period_milliseconds
         }
     )
     .extend(uart.UART_DEVICE_SCHEMA)
@@ -59,3 +61,4 @@ async def to_code(config):
         enable_rx_pin = await cg.gpio_pin_expression(config[CONF_ENABLE_RX_PIN])
         cg.add(var.set_enable_rx_pin(enable_rx_pin))
     cg.add(var.set_uart_echo(config[CONF_UART_ECHO]))
+    cg.add(var.set_delay(config[CONF_DELAY_READ_WRITE]))
